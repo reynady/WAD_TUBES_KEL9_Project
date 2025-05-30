@@ -56,10 +56,20 @@ class pengajuanController extends Controller
             'kategori_id' => 'required|exists:kategori_pengaduan,id',
             'lokasi' => 'required|max:50',
             'urgensi' => 'required|in:rendah,sedang,tinggi,kritis',
-            'bukti' => 'required|file|mimes:jpg,png,jpeg,pdf|max:5120', // 5MB
+            'bukti' => 'required|file|mimes:jpg,png,jpeg,pdf|max:5120', 
         ]);
 
         $path = $request->file('bukti')->store('bukti_pengaduan');
+        $validated['bukti_path'] = str_replace('public/', '', $path);
+
+        $validated['status_id'] = 1; 
+        $validated['user_id'] = auth()->id();
+        $validated['tanggal_pengaduan'] = now();
+
+        $pengaduan = Pengaduan::create($validated);
+
+        return redirect()->route('pengaduan.show', $pengaduan->id)
+                        ->with('success', 'Pengaduan berhasil diajukan! Nomor ID: '.$pengaduan->id);
 
         Pengaduan::create([
             'judul' => $validated['judul'],
@@ -69,7 +79,7 @@ class pengajuanController extends Controller
             'urgensi' => $validated['urgensi'],
             'bukti_path' => $path,
             'user_id' => Auth::id(),
-            'status_id' => 1 // Status default: Menunggu
+            'status_id' => 1 
         ]);
 
         return redirect()->route('pengaduan.index')
