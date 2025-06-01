@@ -6,6 +6,9 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\LaporanController;
+
+Route::get('/laporan', [LaporanController::class, 'index'])->middleware('auth');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -15,7 +18,7 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
+Route::get('/laporan/pengaduan', [LaporanController::class, 'index'])->middleware('auth');
 Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:mahasiswa'])->group(function () {
