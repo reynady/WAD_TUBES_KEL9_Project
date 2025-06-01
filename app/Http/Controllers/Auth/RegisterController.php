@@ -26,7 +26,7 @@ class RegisterController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => 'mahasiswa',
+            'role' => 'mahasiswa', // Default role
         ]);
 
         return redirect('/login')->with('success', 'Registrasi berhasil, silakan login!');

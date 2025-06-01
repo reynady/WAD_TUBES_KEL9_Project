@@ -8,6 +8,7 @@ use App\Exports\LaporanPengaduanExport;
 
 class LaporanController extends Controller
 {
+<<<<<<< Updated upstream
     public function index() {
         return response()->json(LaporanPengaduan::with('pengaduan')->get());
     }
@@ -38,4 +39,20 @@ class LaporanController extends Controller
     public function exportExcel() {
         return Excel::download(new LaporanPengaduanExport, 'laporan_pengaduan.xlsx');
     }
+=======
+    public function index(Request $request)
+    {
+        $query = Pengaduan::query();
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+        }
+
+        $rekap = $query->selectRaw('kategori, status, COUNT(*) as jumlah')
+                       ->groupBy('kategori', 'status')
+                       ->get();
+
+        return view('laporan.index', compact('rekap'));
+    }
+>>>>>>> Stashed changes
 }
