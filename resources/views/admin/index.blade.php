@@ -6,69 +6,66 @@
         $type = session('error') ? 'error' : 'success';
         $message = session($type);
         $bgColor = $type === 'error' ? 'bg-red-500' : 'bg-green-500';
-        $id = $type . 'Message';
-        $closeFunction = 'close' . ucfirst($type) . 'Message';
     @endphp
 
-    <div id="{{ $id }}" class="{{ $bgColor }} text-white p-4 rounded-lg mb-6 relative">
-        <span>{{ $message }}</span>
-        <button class="absolute right-5 text-white font-bold" onclick="{{ $closeFunction }}()">X</button>
+    <div class="{{ $bgColor }} text-white p-4 rounded-lg mb-6">
+        {{ $message }}
     </div>
-
-    <script>
-        function {{ $closeFunction }}() {
-            document.getElementById('{{ $id }}').classList.add('hidden');
-        }
-
-        setTimeout(function() {
-            var el = document.getElementById('{{ $id }}');
-            if (el) el.classList.add('hidden');
-        }, 5000);
-    </script>
 @endif
 
-<div class="bg-white p-6 rounded shadow mb-4">
-    <h1 class="text-3xl font-semibold text-gray-800 mb-2">Manajemen Pengaduan</h1>
-    <p class="text-gray-700 mb-6">Selamat datang di halaman manajemen pengaduan! Di sini Anda dapat menambah, mengedit, dan menghapus pengaduan sesuai kebutuhan.</p>
-
-    <div class="mb-4">
-        <a href="{{ route('pengaduan.create') }}" class="bg-blue-600 text-white py-2 px-6 rounded-full shadow hover:bg-blue-700 transition duration-200">
-            Tambah Pengaduan
-        </a>
+<div class="bg-white p-6 rounded shadow mb-6">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-4">Daftar Pengaduan</h1>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="bg-blue-50 p-4 rounded-lg">
+            <h3 class="text-lg font-medium text-blue-800">Total</h3>
+            <p class="text-2xl font-bold text-blue-600">{{ $totalPengaduan ?? 0 }}</p>
+        </div>
+        <div class="bg-yellow-50 p-4 rounded-lg">
+            <h3 class="text-lg font-medium text-yellow-800">Dalam Proses</h3>
+            <p class="text-2xl font-bold text-yellow-600">{{ $dalamProses ?? 0 }}</p>
+        </div>
+        <div class="bg-green-50 p-4 rounded-lg">
+            <h3 class="text-lg font-medium text-green-800">Selesai</h3>
+            <p class="text-2xl font-bold text-green-600">{{ $selesai ?? 0 }}</p>
+        </div>
     </div>
 </div>
 
 <div class="bg-white p-6 rounded shadow">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse ($pengaduan as $item)
-            <div class="relative bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-200 group">
+            <div class="bg-white p-4 rounded-lg border hover:shadow-md">
                 @if($item->image)
-                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover rounded mb-4 relative z-10">
+                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="w-full h-40 object-cover rounded mb-4">
                 @endif
 
-                <div class="flex justify-between items-center mt-4 relative z-10">
-                    <h2 class="text-xl font-semibold text-gray-900 pr-4">
-                        {{ $item->title }}
-                    </h2>
-                    <div class="flex space-x-4">
-                        <a href="{{ route('pengaduan.edit', $item) }}" class="text-blue-600 hover:underline z-20">Edit</a>
-                        <p>|</p>
-                        <form action="{{ route('pengaduan.destroy', $item) }}" method="POST" class="inline z-20">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline">Hapus</button>
-                        </form>
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <span class="text-xs text-gray-500">#{{ $item->id }}</span>
+                        <h2 class="text-lg font-semibold text-gray-900">{{ $item->title }}</h2>
+                    </div>
+                    <span class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
+                </div>
+                
+                <p class="text-sm text-gray-600 mb-3">{{ Str::limit($item->content, 100) }}</p>
+                
+                <div class="flex items-center justify-between">
+                    <span class="px-2 py-1 text-xs rounded-full 
+                        @if($item->status === 'Menunggu') bg-yellow-100 text-yellow-800
+                        @elseif($item->status === 'Diproses') bg-blue-100 text-blue-800
+                        @elseif($item->status === 'Selesai') bg-green-100 text-green-800
+                        @else bg-red-100 text-red-800 @endif">
+                        {{ $item->status }}
+                    </span>
+                    <div class="space-x-2">
+                        <a href="{{ route('pengaduan.show', $item->id) }}" class="text-blue-600 hover:underline">Detail</a>
                     </div>
                 </div>
-
-                <p class="text-sm text-gray-700 mt-2 mb-2 text-justify relative z-10">
-                    {{ Str::limit($item->content, 100) }}
-                </p>
-                <a href="{{ route('pengaduan.show', $item->id) }}" class="hover:underline text-blue-600 font-medium">Baca Selengkapnya</a>
             </div>
         @empty
-            <div class="col-span-4 text-center text-gray-600 font-medium">
-                Tidak Ada Pengaduan yang Tersedia.
+            <div class="col-span-3 text-center text-gray-500 py-8">
+                Tidak ada pengaduan yang tersedia.
             </div>
         @endforelse
     </div>
