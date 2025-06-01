@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\StatusPengaduan;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
-class StatusPengaduanApiController extends Controller
+class Controller extends BaseController
 {
-    public function index()
-    {
-        return response()->json(StatusPengaduan::all());
-    }
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }
