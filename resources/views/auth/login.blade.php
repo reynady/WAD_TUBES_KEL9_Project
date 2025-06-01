@@ -10,6 +10,13 @@
         $closeFunction = 'close' . ucfirst($type) . 'Message';
     @endphp
 
+    <form method="POST" action="{{ url('/login') }}">
+    @csrf
+    <input type="email" name="email" placeholder="Email"><br>
+    <input type="password" name="password" placeholder="Password"><br>
+    <button type="submit">Login</button>
+</form>
+
     <div id="{{ $id }}" class="{{ $bgColor }} text-white p-4 rounded-lg mb-6 relative">
         <span>{{ $message }}</span>
         <button class="absolute right-5 text-white font-bold" onclick="{{ $closeFunction }}()">X</button>
