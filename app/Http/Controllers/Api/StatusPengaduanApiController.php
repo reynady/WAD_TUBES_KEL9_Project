@@ -10,7 +10,7 @@ class StatusPengaduanApiController extends Controller
 {
     public function index()
     {
-        $data = StatusPengaduan::all();
+        $data = StatusPengaduan::create($request->only('nama'));
 
         return response()->json([
             'status' => true,

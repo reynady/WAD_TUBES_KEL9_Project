@@ -24,7 +24,7 @@ class StatusPengaduanController extends Controller
         StatusPengaduan::create($request->all());
         return redirect()->route('status-pengaduan.index');
     }
-
+    
     public function edit($id)
     {
         $statusPengaduan = StatusPengaduan::findOrFail($id);
