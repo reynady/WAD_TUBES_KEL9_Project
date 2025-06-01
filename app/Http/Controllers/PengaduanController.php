@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pengaduan;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +22,7 @@ class PengaduanController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string|min:20',
             'kategori' => 'required|string',
             'lokasi' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -59,7 +58,7 @@ class PengaduanController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string|min:20',
             'kategori' => 'required|string',
             'lokasi' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -101,4 +100,4 @@ class PengaduanController extends Controller
         $pengaduan = Pengaduan::with(['comments.user', 'user'])->findOrFail($id);
         return view('pengaduan.show', compact('pengaduan'));
     }
-} 
+}
