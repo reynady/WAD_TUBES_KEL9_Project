@@ -15,7 +15,7 @@ class CreatePengaduanTable extends Migration
             $table->text('content');
             $table->string('kategori');
             $table->string('lokasi');
-            $table->string('status');
+            $table->enum('status', ['Menunggu', 'Diproses', 'Selesai'])->default('Menunggu');
             $table->string('image')->nullable();
             $table->timestamps();
         });
@@ -25,4 +25,4 @@ class CreatePengaduanTable extends Migration
     {
         Schema::dropIfExists('pengaduan');
     }
-} 
+}
