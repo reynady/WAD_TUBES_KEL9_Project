@@ -13,12 +13,12 @@ return [
     | incoming requests. Laravel supports a variety of storage options to
     | persist session data. Database storage is a great default choice.
     |
-    | Supported: "file", "cookie", "database", "memcached",
-    |            "redis", "dynamodb", "array"
+    | Supported: "file", "cookie", "database", "apc",
+    |            "memcached", "redis", "dynamodb", "array"
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    'driver' => env('SESSION_DRIVER', 'file'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,9 +32,9 @@ return [
     |
     */
 
-    'lifetime' => (int) env('SESSION_LIFETIME', 120),
+    'lifetime' => env('SESSION_LIFETIME', 120),
 
-    'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
+    'expire_on_close' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -47,7 +47,7 @@ return [
     |
     */
 
-    'encrypt' => env('SESSION_ENCRYPT', false),
+    'encrypt' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ return [
     |
     */
 
-    'table' => env('SESSION_TABLE', 'sessions'),
+    'table' => 'sessions',
 
     /*
     |--------------------------------------------------------------------------
@@ -97,7 +97,7 @@ return [
     | define the cache store which should be used to store the session data
     | between requests. This must match one of your defined cache stores.
     |
-    | Affects: "dynamodb", "memcached", "redis"
+    | Affects: "apc", "dynamodb", "memcached", "redis"
     |
     */
 
@@ -143,7 +143,7 @@ return [
     |
     */
 
-    'path' => env('SESSION_PATH', '/'),
+    'path' => '/',
 
     /*
     |--------------------------------------------------------------------------
@@ -182,7 +182,7 @@ return [
     |
     */
 
-    'http_only' => env('SESSION_HTTP_ONLY', true),
+    'http_only' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -199,7 +199,7 @@ return [
     |
     */
 
-    'same_site' => env('SESSION_SAME_SITE', 'lax'),
+    'same_site' => 'lax',
 
     /*
     |--------------------------------------------------------------------------
