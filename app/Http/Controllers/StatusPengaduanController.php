@@ -9,8 +9,8 @@ class StatusPengaduanController extends Controller
 {
     public function index()
     {
-        $status = StatusPengaduan::all();
-        return view('status-pengaduan.index', compact('status'));
+        $statusPengaduan = StatusPengaduan::all();
+        return view('status-pengaduan.index', compact('statusPengaduan'));
     }
 
     public function create()
@@ -27,8 +27,8 @@ class StatusPengaduanController extends Controller
 
     public function edit($id)
     {
-        $status = StatusPengaduan::findOrFail($id);
-        return view('status-pengaduan.edit', compact('status'));
+        $statusPengaduan = StatusPengaduan::findOrFail($id);
+        return view('status-pengaduan.edit', compact('statusPengaduan'));
     }
 
     public function update(Request $request, $id)
